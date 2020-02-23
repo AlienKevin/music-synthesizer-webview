@@ -5,14 +5,13 @@ import Browser.Events
 import Color
 import Html exposing (Html)
 import Html.Attributes
-import TypedSvg as Svg
-import TypedSvg.Core exposing (Svg)
-import TypedSvg.Attributes
-import TypedSvg.Events
-import TypedSvg.Types exposing (Paint(..), Transform(..), px)
 import Set.Any as Set exposing (AnySet)
 import Math.Vector2 as Vector2 exposing (Vec2)
 import Element as E
+import Element.Input as Input
+import Element.Events as Events
+import Element.Border as Border
+import Element.Background as Background
 import Json.Decode as Decode
 import List.Extra
 
@@ -24,10 +23,10 @@ type alias Model =
   { startingOctave : Int
   , octaves : Int
   , notesPlaying : AnySet (Octave, Int, Int) Note
-  , naturalKeyWidth : Float
-  , naturalKeyHeight : Float
-  , accidentalKeyWidth : Float
-  , accidentalKeyHeight : Float
+  , naturalKeyWidth : Int
+  , naturalKeyHeight : Int
+  , accidentalKeyWidth : Int
+  , accidentalKeyHeight : Int
   , keyMap : List (List Char)
   }
 
@@ -96,7 +95,8 @@ init _ =
 view : Model -> Html Msg
 view model =
   E.layout
-    [] <|
+    [ E.width E.fill
+    ] <|
     E.row
       [ E.width E.fill
       , E.centerX
@@ -138,17 +138,12 @@ viewKeyboard : Model -> E.Element Msg
 viewKeyboard model =
   let
     width =
-      toFloat model.octaves * model.naturalKeyWidth * 7
+      toFloat model.octaves * toFloat model.naturalKeyWidth * 7
     height =
-      model.naturalKeyHeight
+      toFloat model.naturalKeyHeight
   in
-  E.html <|
-  Svg.svg
-    [ TypedSvg.Attributes.width (px width)
-    , TypedSvg.Attributes.height (px height)
-    , TypedSvg.Attributes.viewBox 0 0 width height
-    , Html.Attributes.style "display" "block"
-    , Html.Attributes.style "margin" "auto"
+  E.row
+    [ E.htmlAttribute <| Html.Attributes.style "position" "relative"
     ] <|
     List.map
       (\octave ->
@@ -156,13 +151,13 @@ viewKeyboard model =
           octaveWidth =
             7 * model.naturalKeyWidth
           position =
-            Vector2.vec2 (octaveWidth * toFloat (octave - model.startingOctave)) (height / 2 - model.naturalKeyHeight / 2)
+            Vector2.vec2 (toFloat octaveWidth * toFloat (octave - model.startingOctave)) (height / 2 - toFloat model.naturalKeyHeight / 2)
         in
         viewOctave model position octave
       )
       (List.range model.startingOctave (model.startingOctave + model.octaves))
 
-viewOctave : Model -> Vec2 -> Octave -> Svg Msg
+viewOctave : Model -> Vec2 -> Octave -> E.Element Msg
 viewOctave model position octave =
   let
     noteViews =
@@ -176,14 +171,14 @@ viewOctave model position octave =
                 NaturalNote _ _ ->
                   0
                 SharpNote _ _ ->
-                  -model.accidentalKeyWidth / 2
+                  toFloat -model.accidentalKeyWidth / 2
               )
               + ( List.foldl
                 (\currNoteIndex distance ->
                   distance
                     + (case getNoteAtIndex octave currNoteIndex of
                     NaturalNote _ _ ->
-                      model.naturalKeyWidth
+                      toFloat model.naturalKeyWidth
                     SharpNote _ _ ->
                       0
                     )
@@ -211,7 +206,7 @@ viewOctave model position octave =
         )
         noteViews
   in
-  Svg.g [] <|
+  E.row [] <|
     List.map
       (\noteViewTuple ->
         Tuple.first noteViewTuple
@@ -298,7 +293,7 @@ getNoteAtIndex octave noteIndex =
       NaturalNote CNote octave
 
 
-viewNote : Model -> Vec2 -> Bool -> Note -> Svg Msg
+viewNote : Model -> Vec2 -> Bool -> Note -> E.Element Msg
 viewNote model position isPlaying note =
   let
     fillColor =
@@ -313,26 +308,30 @@ viewNote model position isPlaying note =
     attributes =
       ( case note of
         NaturalNote _ _ ->
-          [ TypedSvg.Attributes.width <| px model.naturalKeyWidth
-          , TypedSvg.Attributes.height <| px model.naturalKeyHeight
+          [ E.width <| E.px model.naturalKeyWidth
+          , E.height <| E.px model.naturalKeyHeight
           ]
         SharpNote _ _ ->
-          [ TypedSvg.Attributes.width <| px model.accidentalKeyWidth
-          , TypedSvg.Attributes.height <| px model.accidentalKeyHeight
+          [ E.width <| E.px model.accidentalKeyWidth
+          , E.height <| E.px model.accidentalKeyHeight
           ]
-      ) ++
-      [ TypedSvg.Attributes.x <| px <| Vector2.getX position
-      , TypedSvg.Attributes.y <| px <| Vector2.getY position
-      , TypedSvg.Attributes.stroke <| Paint Color.darkGrey
-      , TypedSvg.Attributes.strokeWidth <| (px 2)
-      , TypedSvg.Attributes.fill <| Paint fillColor
-      , TypedSvg.Events.onMouseDown <| PlayNote note
-      , TypedSvg.Events.onMouseUp <| EndNote note
-      ]
+      )
   in
-  Svg.rect
-    attributes
-    []
+  Input.button
+    ( attributes
+    ++ [ Background.color <| toElmUIColor fillColor
+    , Events.onMouseDown <| PlayNote note
+    , Events.onMouseUp <| EndNote note
+    , Border.width <| 2
+    , Border.color <| toElmUIColor Color.darkGrey
+    , E.htmlAttribute <| Html.Attributes.style "position" "absolute"
+    , E.htmlAttribute <| Html.Attributes.style "left" <| String.fromFloat <| Vector2.getX position
+    , E.htmlAttribute <| Html.Attributes.style "top" <| String.fromFloat <| Vector2.getY position
+    ]
+    )
+    { onPress = Nothing
+    , label = E.text ""
+    }
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
@@ -387,3 +386,12 @@ subscriptions model =
       <| keyDecoder model.startingOctave model.keyMap
     )
   ]
+
+
+toElmUIColor : Color.Color -> E.Color
+toElmUIColor color =
+    let
+        {red, green, blue, alpha } =
+            Color.toRgba color
+    in
+    E.rgba red green blue alpha
