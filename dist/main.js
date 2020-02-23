@@ -6221,8 +6221,8 @@ var $author$project$Main$init = function (_v0) {
 			naturalKeyHeight: 150,
 			naturalKeyWidth: 30,
 			notesPlaying: $turboMaCk$any_set$Set$Any$empty($author$project$Main$comparableNote),
-			octaves: 5,
-			startingOctave: 1
+			octaves: 4,
+			startingOctave: 2
 		},
 		$elm$core$Platform$Cmd$none);
 };
@@ -6803,7 +6803,6 @@ var $author$project$Main$update = F2(
 				$author$project$Main$endNote(_Utils_Tuple0));
 		}
 	});
-var $author$project$Main$height = 900;
 var $elm$virtual_dom$VirtualDom$attribute = F2(
 	function (key, value) {
 		return A2(
@@ -7215,23 +7214,24 @@ var $author$project$Main$viewOctave = F3(
 				},
 				sortedNoteViews));
 	});
-var $author$project$Main$width = 1400;
 var $author$project$Main$view = function (model) {
+	var width = (model.octaves * model.naturalKeyWidth) * 7;
+	var height = model.naturalKeyHeight;
 	return A2(
 		$elm_community$typed_svg$TypedSvg$svg,
 		_List_fromArray(
 			[
 				$elm_community$typed_svg$TypedSvg$Attributes$width(
-				$elm_community$typed_svg$TypedSvg$Types$px($author$project$Main$width)),
+				$elm_community$typed_svg$TypedSvg$Types$px(width)),
 				$elm_community$typed_svg$TypedSvg$Attributes$height(
-				$elm_community$typed_svg$TypedSvg$Types$px($author$project$Main$height)),
-				A4($elm_community$typed_svg$TypedSvg$Attributes$viewBox, 0, 0, $author$project$Main$width, $author$project$Main$height)
+				$elm_community$typed_svg$TypedSvg$Types$px(height)),
+				A4($elm_community$typed_svg$TypedSvg$Attributes$viewBox, 0, 0, width, height)
 			]),
 		A2(
 			$elm$core$List$map,
 			function (octave) {
 				var octaveWidth = 7 * model.naturalKeyWidth;
-				var position = A2($elm_explorations$linear_algebra$Math$Vector2$vec2, octaveWidth * (octave - model.startingOctave), ($author$project$Main$height / 2) - (model.naturalKeyHeight / 2));
+				var position = A2($elm_explorations$linear_algebra$Math$Vector2$vec2, octaveWidth * (octave - model.startingOctave), (height / 2) - (model.naturalKeyHeight / 2));
 				return A3($author$project$Main$viewOctave, model, position, octave);
 			},
 			A2($elm$core$List$range, model.startingOctave, model.startingOctave + model.octaves)));

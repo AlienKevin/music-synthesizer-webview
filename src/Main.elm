@@ -66,8 +66,8 @@ main =
 
 init : () -> (Model, Cmd Msg)
 init _ =
-  ({ startingOctave = 1
-  , octaves = 5
+  ({ startingOctave = 2
+  , octaves = 4
   , notesPlaying = Set.empty comparableNote
   , naturalKeyWidth = 30
   , naturalKeyHeight = 150
@@ -78,12 +78,14 @@ init _ =
   )
 
 
-width = 1400
-height = 900
-
-
 view : Model -> Html Msg
 view model =
+  let
+    width =
+      toFloat model.octaves * model.naturalKeyWidth * 7
+    height =
+      model.naturalKeyHeight
+  in
   Svg.svg
     [ TypedSvg.Attributes.width (px width)
     , TypedSvg.Attributes.height (px height)
