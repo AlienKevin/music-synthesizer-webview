@@ -1,0 +1,32 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Synthesizer</title>
+  <script src="https://unpkg.com/tone"></script>
+</head>
+<body>
+  <script src="/dist/main.js"></script>
+  <main></main>
+  <script>
+    var app = Elm.Main.init({ node: document.querySelector('main') })
+    var synth = new Tone.Synth({
+        oscillator: {
+          type: 'triangle8'
+        },
+        envelope: {
+          attack: 2,
+          decay: 1,
+          sustain: 0.4,
+          release: 4
+        }
+      }).toMaster();
+    app.ports.playNote.subscribe(function(note) {
+      synth.triggerAttack(note);
+    });
+    app.ports.endNote.subscribe(function() {
+      synth.triggerRelease();
+    });
+  </script>
+</body>
+</html>
