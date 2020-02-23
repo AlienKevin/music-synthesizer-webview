@@ -3,6 +3,7 @@ port module Main exposing (main)
 import Browser
 import Color
 import Html exposing (Html)
+import Html.Attributes
 import TypedSvg as Svg
 import TypedSvg.Core exposing (Svg)
 import TypedSvg.Attributes
@@ -10,6 +11,7 @@ import TypedSvg.Events
 import TypedSvg.Types exposing (Paint(..), Transform(..), px)
 import Set.Any as Set exposing (AnySet)
 import Math.Vector2 as Vector2 exposing (Vec2)
+import Element as E
 
 
 port playNote : String -> Cmd msg
@@ -80,16 +82,30 @@ init _ =
 
 view : Model -> Html Msg
 view model =
+  E.layout [] <|
+    E.row
+      [ E.width E.fill
+      , E.centerX
+      , E.centerY
+      ]
+      [ viewKeyboard model
+      ]
+
+viewKeyboard : Model -> E.Element Msg
+viewKeyboard model =
   let
     width =
       toFloat model.octaves * model.naturalKeyWidth * 7
     height =
       model.naturalKeyHeight
   in
+  E.html <|
   Svg.svg
     [ TypedSvg.Attributes.width (px width)
     , TypedSvg.Attributes.height (px height)
     , TypedSvg.Attributes.viewBox 0 0 width height
+    , Html.Attributes.style "display" "block"
+    , Html.Attributes.style "margin" "auto"
     ] <|
     List.map
       (\octave ->
