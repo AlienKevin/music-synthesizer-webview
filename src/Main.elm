@@ -343,7 +343,10 @@ update msg model =
         notesPlaying =
           Set.insert note model.notesPlaying
       }
-      , playNote <| noteToPitchOctaveNotation note
+      , if Set.member note model.notesPlaying then
+          Cmd.none
+        else
+          playNote <| noteToPitchOctaveNotation note
       )
     EndNote note ->
       ( { model |

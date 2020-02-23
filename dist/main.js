@@ -6915,6 +6915,60 @@ var $turboMaCk$any_set$Set$Any$insert = F2(
 		return $turboMaCk$any_set$Set$Any$AnySet(
 			A3($turboMaCk$any_dict$Dict$Any$insert, a, _Utils_Tuple0, dict));
 	});
+var $elm$core$Dict$get = F2(
+	function (targetKey, dict) {
+		get:
+		while (true) {
+			if (dict.$ === 'RBEmpty_elm_builtin') {
+				return $elm$core$Maybe$Nothing;
+			} else {
+				var key = dict.b;
+				var value = dict.c;
+				var left = dict.d;
+				var right = dict.e;
+				var _v1 = A2($elm$core$Basics$compare, targetKey, key);
+				switch (_v1.$) {
+					case 'LT':
+						var $temp$targetKey = targetKey,
+							$temp$dict = left;
+						targetKey = $temp$targetKey;
+						dict = $temp$dict;
+						continue get;
+					case 'EQ':
+						return $elm$core$Maybe$Just(value);
+					default:
+						var $temp$targetKey = targetKey,
+							$temp$dict = right;
+						targetKey = $temp$targetKey;
+						dict = $temp$dict;
+						continue get;
+				}
+			}
+		}
+	});
+var $elm$core$Dict$member = F2(
+	function (key, dict) {
+		var _v0 = A2($elm$core$Dict$get, key, dict);
+		if (_v0.$ === 'Just') {
+			return true;
+		} else {
+			return false;
+		}
+	});
+var $turboMaCk$any_dict$Dict$Any$member = F2(
+	function (k, _v0) {
+		var dict = _v0.a.dict;
+		var toKey = _v0.a.toKey;
+		return A2(
+			$elm$core$Dict$member,
+			toKey(k),
+			dict);
+	});
+var $turboMaCk$any_set$Set$Any$member = F2(
+	function (a, _v0) {
+		var dict = _v0.a;
+		return A2($turboMaCk$any_dict$Dict$Any$member, a, dict);
+	});
 var $author$project$Main$noteNameToString = function (name) {
 	switch (name.$) {
 		case 'CNote':
@@ -7340,7 +7394,7 @@ var $author$project$Main$update = F2(
 						{
 							notesPlaying: A2($turboMaCk$any_set$Set$Any$insert, note, model.notesPlaying)
 						}),
-					$author$project$Main$playNote(
+					A2($turboMaCk$any_set$Set$Any$member, note, model.notesPlaying) ? $elm$core$Platform$Cmd$none : $author$project$Main$playNote(
 						$author$project$Main$noteToPitchOctaveNotation(note)));
 			case 'EndNote':
 				var note = msg.a;
@@ -7681,46 +7735,6 @@ var $elm$core$Set$insert = F2(
 		var dict = _v0.a;
 		return $elm$core$Set$Set_elm_builtin(
 			A3($elm$core$Dict$insert, key, _Utils_Tuple0, dict));
-	});
-var $elm$core$Dict$get = F2(
-	function (targetKey, dict) {
-		get:
-		while (true) {
-			if (dict.$ === 'RBEmpty_elm_builtin') {
-				return $elm$core$Maybe$Nothing;
-			} else {
-				var key = dict.b;
-				var value = dict.c;
-				var left = dict.d;
-				var right = dict.e;
-				var _v1 = A2($elm$core$Basics$compare, targetKey, key);
-				switch (_v1.$) {
-					case 'LT':
-						var $temp$targetKey = targetKey,
-							$temp$dict = left;
-						targetKey = $temp$targetKey;
-						dict = $temp$dict;
-						continue get;
-					case 'EQ':
-						return $elm$core$Maybe$Just(value);
-					default:
-						var $temp$targetKey = targetKey,
-							$temp$dict = right;
-						targetKey = $temp$targetKey;
-						dict = $temp$dict;
-						continue get;
-				}
-			}
-		}
-	});
-var $elm$core$Dict$member = F2(
-	function (key, dict) {
-		var _v0 = A2($elm$core$Dict$get, key, dict);
-		if (_v0.$ === 'Just') {
-			return true;
-		} else {
-			return false;
-		}
 	});
 var $elm$core$Set$member = F2(
 	function (key, _v0) {
@@ -13170,20 +13184,6 @@ var $elm_community$typed_svg$TypedSvg$Attributes$viewBox = F4(
 	});
 var $elm_explorations$linear_algebra$Math$Vector2$add = _MJS_v2add;
 var $elm_community$typed_svg$TypedSvg$g = $elm_community$typed_svg$TypedSvg$Core$node('g');
-var $turboMaCk$any_dict$Dict$Any$member = F2(
-	function (k, _v0) {
-		var dict = _v0.a.dict;
-		var toKey = _v0.a.toKey;
-		return A2(
-			$elm$core$Dict$member,
-			toKey(k),
-			dict);
-	});
-var $turboMaCk$any_set$Set$Any$member = F2(
-	function (a, _v0) {
-		var dict = _v0.a;
-		return A2($turboMaCk$any_dict$Dict$Any$member, a, dict);
-	});
 var $elm$core$List$sortBy = _List_sortBy;
 var $elm_community$typed_svg$TypedSvg$Types$Paint = function (a) {
 	return {$: 'Paint', a: a};
