@@ -16,7 +16,8 @@ port playNote : String -> Cmd msg
 port endNote : () -> Cmd msg
 
 type alias Model =
-  { octaves : Int
+  { startingOctave : Int
+  , octaves : Int
   , notesPlaying : AnySet (Octave, Int, Int) Note
   , naturalKeyWidth : Float
   , naturalKeyHeight : Float
@@ -65,7 +66,8 @@ main =
 
 init : () -> (Model, Cmd Msg)
 init _ =
-  ({ octaves = 5
+  ({ startingOctave = 1
+  , octaves = 5
   , notesPlaying = Set.empty comparableNote
   , naturalKeyWidth = 30
   , naturalKeyHeight = 150
@@ -93,11 +95,11 @@ view model =
           octaveWidth =
             7 * model.naturalKeyWidth
           position =
-            Vector2.vec2 (octaveWidth * toFloat octave) (height / 2 - model.naturalKeyHeight / 2)
+            Vector2.vec2 (octaveWidth * toFloat (octave - model.startingOctave)) (height / 2 - model.naturalKeyHeight / 2)
         in
         viewOctave model position octave
       )
-      (List.range 1 model.octaves)
+      (List.range model.startingOctave (model.startingOctave + model.octaves))
 
 viewOctave : Model -> Vec2 -> Octave -> Svg Msg
 viewOctave model position octave =

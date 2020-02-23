@@ -6221,7 +6221,8 @@ var $author$project$Main$init = function (_v0) {
 			naturalKeyHeight: 150,
 			naturalKeyWidth: 30,
 			notesPlaying: $turboMaCk$any_set$Set$Any$empty($author$project$Main$comparableNote),
-			octaves: 5
+			octaves: 5,
+			startingOctave: 1
 		},
 		$elm$core$Platform$Cmd$none);
 };
@@ -7230,10 +7231,10 @@ var $author$project$Main$view = function (model) {
 			$elm$core$List$map,
 			function (octave) {
 				var octaveWidth = 7 * model.naturalKeyWidth;
-				var position = A2($elm_explorations$linear_algebra$Math$Vector2$vec2, octaveWidth * octave, ($author$project$Main$height / 2) - (model.naturalKeyHeight / 2));
+				var position = A2($elm_explorations$linear_algebra$Math$Vector2$vec2, octaveWidth * (octave - model.startingOctave), ($author$project$Main$height / 2) - (model.naturalKeyHeight / 2));
 				return A3($author$project$Main$viewOctave, model, position, octave);
 			},
-			A2($elm$core$List$range, 1, model.octaves)));
+			A2($elm$core$List$range, model.startingOctave, model.startingOctave + model.octaves)));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{init: $author$project$Main$init, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});
