@@ -6255,6 +6255,69 @@ var $author$project$Main$init = function (_v0) {
 		{
 			accidentalKeyHeight: 90,
 			accidentalKeyWidth: 20,
+			keyMap: _List_fromArray(
+				[
+					_List_fromArray(
+					[
+						_Utils_chr('1'),
+						_Utils_chr('!'),
+						_Utils_chr('2'),
+						_Utils_chr('@'),
+						_Utils_chr('3'),
+						_Utils_chr('4'),
+						_Utils_chr('$'),
+						_Utils_chr('5'),
+						_Utils_chr('%'),
+						_Utils_chr('6'),
+						_Utils_chr('^'),
+						_Utils_chr('7')
+					]),
+					_List_fromArray(
+					[
+						_Utils_chr('q'),
+						_Utils_chr('Q'),
+						_Utils_chr('w'),
+						_Utils_chr('W'),
+						_Utils_chr('e'),
+						_Utils_chr('r'),
+						_Utils_chr('R'),
+						_Utils_chr('t'),
+						_Utils_chr('T'),
+						_Utils_chr('y'),
+						_Utils_chr('Y'),
+						_Utils_chr('u')
+					]),
+					_List_fromArray(
+					[
+						_Utils_chr('a'),
+						_Utils_chr('A'),
+						_Utils_chr('s'),
+						_Utils_chr('S'),
+						_Utils_chr('d'),
+						_Utils_chr('f'),
+						_Utils_chr('F'),
+						_Utils_chr('g'),
+						_Utils_chr('G'),
+						_Utils_chr('h'),
+						_Utils_chr('H'),
+						_Utils_chr('j')
+					]),
+					_List_fromArray(
+					[
+						_Utils_chr('z'),
+						_Utils_chr('Z'),
+						_Utils_chr('x'),
+						_Utils_chr('X'),
+						_Utils_chr('c'),
+						_Utils_chr('v'),
+						_Utils_chr('V'),
+						_Utils_chr('b'),
+						_Utils_chr('B'),
+						_Utils_chr('n'),
+						_Utils_chr('N'),
+						_Utils_chr('m')
+					])
+				]),
 			naturalKeyHeight: 150,
 			naturalKeyWidth: 30,
 			notesPlaying: $turboMaCk$any_set$Set$Any$empty($author$project$Main$comparableNote),
@@ -6263,17 +6326,184 @@ var $author$project$Main$init = function (_v0) {
 		},
 		$elm$core$Platform$Cmd$none);
 };
-var $elm$core$Platform$Sub$batch = _Platform_batch;
-var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
-var $author$project$Main$subscriptions = function (_v0) {
-	return $elm$core$Platform$Sub$none;
+var $author$project$Main$EndNote = function (a) {
+	return {$: 'EndNote', a: a};
 };
-var $elm$json$Json$Encode$null = _Json_encodeNull;
-var $author$project$Main$endNote = _Platform_outgoingPort(
-	'endNote',
-	function ($) {
-		return $elm$json$Json$Encode$null;
+var $author$project$Main$NoOp = {$: 'NoOp'};
+var $author$project$Main$PlayNote = function (a) {
+	return {$: 'PlayNote', a: a};
+};
+var $elm$core$Platform$Sub$batch = _Platform_batch;
+var $elm$json$Json$Decode$field = _Json_decodeField;
+var $elm_community$list_extra$List$Extra$findIndexHelp = F3(
+	function (index, predicate, list) {
+		findIndexHelp:
+		while (true) {
+			if (!list.b) {
+				return $elm$core$Maybe$Nothing;
+			} else {
+				var x = list.a;
+				var xs = list.b;
+				if (predicate(x)) {
+					return $elm$core$Maybe$Just(index);
+				} else {
+					var $temp$index = index + 1,
+						$temp$predicate = predicate,
+						$temp$list = xs;
+					index = $temp$index;
+					predicate = $temp$predicate;
+					list = $temp$list;
+					continue findIndexHelp;
+				}
+			}
+		}
 	});
+var $elm_community$list_extra$List$Extra$findIndex = $elm_community$list_extra$List$Extra$findIndexHelp(0);
+var $elm_community$list_extra$List$Extra$elemIndex = function (x) {
+	return $elm_community$list_extra$List$Extra$findIndex(
+		$elm$core$Basics$eq(x));
+};
+var $elm$core$List$maybeCons = F3(
+	function (f, mx, xs) {
+		var _v0 = f(mx);
+		if (_v0.$ === 'Just') {
+			var x = _v0.a;
+			return A2($elm$core$List$cons, x, xs);
+		} else {
+			return xs;
+		}
+	});
+var $elm$core$List$filterMap = F2(
+	function (f, xs) {
+		return A3(
+			$elm$core$List$foldr,
+			$elm$core$List$maybeCons(f),
+			_List_Nil,
+			xs);
+	});
+var $author$project$Main$ANote = {$: 'ANote'};
+var $author$project$Main$BNote = {$: 'BNote'};
+var $author$project$Main$CNote = {$: 'CNote'};
+var $author$project$Main$DNote = {$: 'DNote'};
+var $author$project$Main$ENote = {$: 'ENote'};
+var $author$project$Main$FNote = {$: 'FNote'};
+var $author$project$Main$GNote = {$: 'GNote'};
+var $author$project$Main$NaturalNote = F2(
+	function (a, b) {
+		return {$: 'NaturalNote', a: a, b: b};
+	});
+var $author$project$Main$SharpNote = F2(
+	function (a, b) {
+		return {$: 'SharpNote', a: a, b: b};
+	});
+var $author$project$Main$getNoteAtIndex = F2(
+	function (octave, noteIndex) {
+		switch (noteIndex) {
+			case 1:
+				return A2($author$project$Main$NaturalNote, $author$project$Main$CNote, octave);
+			case 2:
+				return A2($author$project$Main$SharpNote, $author$project$Main$CNote, octave);
+			case 3:
+				return A2($author$project$Main$NaturalNote, $author$project$Main$DNote, octave);
+			case 4:
+				return A2($author$project$Main$SharpNote, $author$project$Main$DNote, octave);
+			case 5:
+				return A2($author$project$Main$NaturalNote, $author$project$Main$ENote, octave);
+			case 6:
+				return A2($author$project$Main$NaturalNote, $author$project$Main$FNote, octave);
+			case 7:
+				return A2($author$project$Main$SharpNote, $author$project$Main$FNote, octave);
+			case 8:
+				return A2($author$project$Main$NaturalNote, $author$project$Main$GNote, octave);
+			case 9:
+				return A2($author$project$Main$SharpNote, $author$project$Main$GNote, octave);
+			case 10:
+				return A2($author$project$Main$NaturalNote, $author$project$Main$ANote, octave);
+			case 11:
+				return A2($author$project$Main$SharpNote, $author$project$Main$ANote, octave);
+			case 12:
+				return A2($author$project$Main$NaturalNote, $author$project$Main$BNote, octave);
+			default:
+				return A2($author$project$Main$NaturalNote, $author$project$Main$CNote, octave);
+		}
+	});
+var $elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return $elm$core$Maybe$Just(x);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
+var $author$project$Main$keyToNote = F3(
+	function (startingOctave, keyMap, key) {
+		var _v0 = $elm$core$String$uncons(key);
+		if ((_v0.$ === 'Just') && (_v0.a.b === '')) {
+			var _v1 = _v0.a;
+			var _char = _v1.a;
+			return $elm$core$List$head(
+				A2(
+					$elm$core$List$filterMap,
+					function (_v2) {
+						var octave = _v2.a;
+						var index = _v2.b;
+						if (index.$ === 'Nothing') {
+							return $elm$core$Maybe$Nothing;
+						} else {
+							var keyIndex = index.a;
+							return $elm$core$Maybe$Just(
+								A2($author$project$Main$getNoteAtIndex, startingOctave + octave, keyIndex + 1));
+						}
+					},
+					A2(
+						$elm$core$List$indexedMap,
+						F2(
+							function (index, octaveMap) {
+								return _Utils_Tuple2(
+									index,
+									A2($elm_community$list_extra$List$Extra$elemIndex, _char, octaveMap));
+							}),
+						keyMap)));
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
+var $elm$json$Json$Decode$string = _Json_decodeString;
+var $author$project$Main$keyDecoder = F2(
+	function (startingOctave, keyMap) {
+		return A2(
+			$elm$json$Json$Decode$map,
+			A2($author$project$Main$keyToNote, startingOctave, keyMap),
+			A2($elm$json$Json$Decode$field, 'key', $elm$json$Json$Decode$string));
+	});
+var $elm$browser$Browser$Events$Document = {$: 'Document'};
+var $elm$browser$Browser$Events$MySub = F3(
+	function (a, b, c) {
+		return {$: 'MySub', a: a, b: b, c: c};
+	});
+var $elm$browser$Browser$Events$State = F2(
+	function (subs, pids) {
+		return {pids: pids, subs: subs};
+	});
+var $elm$browser$Browser$Events$init = $elm$core$Task$succeed(
+	A2($elm$browser$Browser$Events$State, _List_Nil, $elm$core$Dict$empty));
+var $elm$browser$Browser$Events$nodeToKey = function (node) {
+	if (node.$ === 'Document') {
+		return 'd_';
+	} else {
+		return 'w_';
+	}
+};
+var $elm$browser$Browser$Events$addKey = function (sub) {
+	var node = sub.a;
+	var name = sub.b;
+	return _Utils_Tuple2(
+		_Utils_ap(
+			$elm$browser$Browser$Events$nodeToKey(node),
+			name),
+		sub);
+};
 var $elm$core$Dict$Black = {$: 'Black'};
 var $elm$core$Dict$RBNode_elm_builtin = F5(
 	function (a, b, c, d, e) {
@@ -6382,6 +6612,288 @@ var $elm$core$Dict$insert = F3(
 			var x = _v0;
 			return x;
 		}
+	});
+var $elm$core$Dict$fromList = function (assocs) {
+	return A3(
+		$elm$core$List$foldl,
+		F2(
+			function (_v0, dict) {
+				var key = _v0.a;
+				var value = _v0.b;
+				return A3($elm$core$Dict$insert, key, value, dict);
+			}),
+		$elm$core$Dict$empty,
+		assocs);
+};
+var $elm$core$Process$kill = _Scheduler_kill;
+var $elm$core$Dict$foldl = F3(
+	function (func, acc, dict) {
+		foldl:
+		while (true) {
+			if (dict.$ === 'RBEmpty_elm_builtin') {
+				return acc;
+			} else {
+				var key = dict.b;
+				var value = dict.c;
+				var left = dict.d;
+				var right = dict.e;
+				var $temp$func = func,
+					$temp$acc = A3(
+					func,
+					key,
+					value,
+					A3($elm$core$Dict$foldl, func, acc, left)),
+					$temp$dict = right;
+				func = $temp$func;
+				acc = $temp$acc;
+				dict = $temp$dict;
+				continue foldl;
+			}
+		}
+	});
+var $elm$core$Dict$merge = F6(
+	function (leftStep, bothStep, rightStep, leftDict, rightDict, initialResult) {
+		var stepState = F3(
+			function (rKey, rValue, _v0) {
+				stepState:
+				while (true) {
+					var list = _v0.a;
+					var result = _v0.b;
+					if (!list.b) {
+						return _Utils_Tuple2(
+							list,
+							A3(rightStep, rKey, rValue, result));
+					} else {
+						var _v2 = list.a;
+						var lKey = _v2.a;
+						var lValue = _v2.b;
+						var rest = list.b;
+						if (_Utils_cmp(lKey, rKey) < 0) {
+							var $temp$rKey = rKey,
+								$temp$rValue = rValue,
+								$temp$_v0 = _Utils_Tuple2(
+								rest,
+								A3(leftStep, lKey, lValue, result));
+							rKey = $temp$rKey;
+							rValue = $temp$rValue;
+							_v0 = $temp$_v0;
+							continue stepState;
+						} else {
+							if (_Utils_cmp(lKey, rKey) > 0) {
+								return _Utils_Tuple2(
+									list,
+									A3(rightStep, rKey, rValue, result));
+							} else {
+								return _Utils_Tuple2(
+									rest,
+									A4(bothStep, lKey, lValue, rValue, result));
+							}
+						}
+					}
+				}
+			});
+		var _v3 = A3(
+			$elm$core$Dict$foldl,
+			stepState,
+			_Utils_Tuple2(
+				$elm$core$Dict$toList(leftDict),
+				initialResult),
+			rightDict);
+		var leftovers = _v3.a;
+		var intermediateResult = _v3.b;
+		return A3(
+			$elm$core$List$foldl,
+			F2(
+				function (_v4, result) {
+					var k = _v4.a;
+					var v = _v4.b;
+					return A3(leftStep, k, v, result);
+				}),
+			intermediateResult,
+			leftovers);
+	});
+var $elm$browser$Browser$Events$Event = F2(
+	function (key, event) {
+		return {event: event, key: key};
+	});
+var $elm$core$Platform$sendToSelf = _Platform_sendToSelf;
+var $elm$browser$Browser$Events$spawn = F3(
+	function (router, key, _v0) {
+		var node = _v0.a;
+		var name = _v0.b;
+		var actualNode = function () {
+			if (node.$ === 'Document') {
+				return _Browser_doc;
+			} else {
+				return _Browser_window;
+			}
+		}();
+		return A2(
+			$elm$core$Task$map,
+			function (value) {
+				return _Utils_Tuple2(key, value);
+			},
+			A3(
+				_Browser_on,
+				actualNode,
+				name,
+				function (event) {
+					return A2(
+						$elm$core$Platform$sendToSelf,
+						router,
+						A2($elm$browser$Browser$Events$Event, key, event));
+				}));
+	});
+var $elm$core$Dict$union = F2(
+	function (t1, t2) {
+		return A3($elm$core$Dict$foldl, $elm$core$Dict$insert, t2, t1);
+	});
+var $elm$browser$Browser$Events$onEffects = F3(
+	function (router, subs, state) {
+		var stepRight = F3(
+			function (key, sub, _v6) {
+				var deads = _v6.a;
+				var lives = _v6.b;
+				var news = _v6.c;
+				return _Utils_Tuple3(
+					deads,
+					lives,
+					A2(
+						$elm$core$List$cons,
+						A3($elm$browser$Browser$Events$spawn, router, key, sub),
+						news));
+			});
+		var stepLeft = F3(
+			function (_v4, pid, _v5) {
+				var deads = _v5.a;
+				var lives = _v5.b;
+				var news = _v5.c;
+				return _Utils_Tuple3(
+					A2($elm$core$List$cons, pid, deads),
+					lives,
+					news);
+			});
+		var stepBoth = F4(
+			function (key, pid, _v2, _v3) {
+				var deads = _v3.a;
+				var lives = _v3.b;
+				var news = _v3.c;
+				return _Utils_Tuple3(
+					deads,
+					A3($elm$core$Dict$insert, key, pid, lives),
+					news);
+			});
+		var newSubs = A2($elm$core$List$map, $elm$browser$Browser$Events$addKey, subs);
+		var _v0 = A6(
+			$elm$core$Dict$merge,
+			stepLeft,
+			stepBoth,
+			stepRight,
+			state.pids,
+			$elm$core$Dict$fromList(newSubs),
+			_Utils_Tuple3(_List_Nil, $elm$core$Dict$empty, _List_Nil));
+		var deadPids = _v0.a;
+		var livePids = _v0.b;
+		var makeNewPids = _v0.c;
+		return A2(
+			$elm$core$Task$andThen,
+			function (pids) {
+				return $elm$core$Task$succeed(
+					A2(
+						$elm$browser$Browser$Events$State,
+						newSubs,
+						A2(
+							$elm$core$Dict$union,
+							livePids,
+							$elm$core$Dict$fromList(pids))));
+			},
+			A2(
+				$elm$core$Task$andThen,
+				function (_v1) {
+					return $elm$core$Task$sequence(makeNewPids);
+				},
+				$elm$core$Task$sequence(
+					A2($elm$core$List$map, $elm$core$Process$kill, deadPids))));
+	});
+var $elm$browser$Browser$Events$onSelfMsg = F3(
+	function (router, _v0, state) {
+		var key = _v0.key;
+		var event = _v0.event;
+		var toMessage = function (_v2) {
+			var subKey = _v2.a;
+			var _v3 = _v2.b;
+			var node = _v3.a;
+			var name = _v3.b;
+			var decoder = _v3.c;
+			return _Utils_eq(subKey, key) ? A2(_Browser_decodeEvent, decoder, event) : $elm$core$Maybe$Nothing;
+		};
+		var messages = A2($elm$core$List$filterMap, toMessage, state.subs);
+		return A2(
+			$elm$core$Task$andThen,
+			function (_v1) {
+				return $elm$core$Task$succeed(state);
+			},
+			$elm$core$Task$sequence(
+				A2(
+					$elm$core$List$map,
+					$elm$core$Platform$sendToApp(router),
+					messages)));
+	});
+var $elm$browser$Browser$Events$subMap = F2(
+	function (func, _v0) {
+		var node = _v0.a;
+		var name = _v0.b;
+		var decoder = _v0.c;
+		return A3(
+			$elm$browser$Browser$Events$MySub,
+			node,
+			name,
+			A2($elm$json$Json$Decode$map, func, decoder));
+	});
+_Platform_effectManagers['Browser.Events'] = _Platform_createManager($elm$browser$Browser$Events$init, $elm$browser$Browser$Events$onEffects, $elm$browser$Browser$Events$onSelfMsg, 0, $elm$browser$Browser$Events$subMap);
+var $elm$browser$Browser$Events$subscription = _Platform_leaf('Browser.Events');
+var $elm$browser$Browser$Events$on = F3(
+	function (node, name, decoder) {
+		return $elm$browser$Browser$Events$subscription(
+			A3($elm$browser$Browser$Events$MySub, node, name, decoder));
+	});
+var $elm$browser$Browser$Events$onKeyDown = A2($elm$browser$Browser$Events$on, $elm$browser$Browser$Events$Document, 'keydown');
+var $elm$browser$Browser$Events$onKeyUp = A2($elm$browser$Browser$Events$on, $elm$browser$Browser$Events$Document, 'keyup');
+var $author$project$Main$subscriptions = function (model) {
+	return $elm$core$Platform$Sub$batch(
+		_List_fromArray(
+			[
+				$elm$browser$Browser$Events$onKeyDown(
+				A2(
+					$elm$json$Json$Decode$map,
+					function (note) {
+						if (note.$ === 'Nothing') {
+							return $author$project$Main$NoOp;
+						} else {
+							var n = note.a;
+							return $author$project$Main$PlayNote(n);
+						}
+					},
+					A2($author$project$Main$keyDecoder, model.startingOctave, model.keyMap))),
+				$elm$browser$Browser$Events$onKeyUp(
+				A2(
+					$elm$json$Json$Decode$map,
+					function (note) {
+						if (note.$ === 'Nothing') {
+							return $author$project$Main$NoOp;
+						} else {
+							var n = note.a;
+							return $author$project$Main$EndNote(n);
+						}
+					},
+					A2($author$project$Main$keyDecoder, model.startingOctave, model.keyMap)))
+			]));
+};
+var $elm$json$Json$Encode$null = _Json_encodeNull;
+var $author$project$Main$endNote = _Platform_outgoingPort(
+	'endNote',
+	function ($) {
+		return $elm$json$Json$Encode$null;
 	});
 var $turboMaCk$any_dict$Dict$Any$insert = F3(
 	function (k, v, _v0) {
@@ -6819,25 +7331,28 @@ var $turboMaCk$any_set$Set$Any$remove = F2(
 	});
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		if (msg.$ === 'PlayNote') {
-			var note = msg.a;
-			return _Utils_Tuple2(
-				_Utils_update(
-					model,
-					{
-						notesPlaying: A2($turboMaCk$any_set$Set$Any$insert, note, model.notesPlaying)
-					}),
-				$author$project$Main$playNote(
-					$author$project$Main$noteToPitchOctaveNotation(note)));
-		} else {
-			var note = msg.a;
-			return _Utils_Tuple2(
-				_Utils_update(
-					model,
-					{
-						notesPlaying: A2($turboMaCk$any_set$Set$Any$remove, note, model.notesPlaying)
-					}),
-				$author$project$Main$endNote(_Utils_Tuple0));
+		switch (msg.$) {
+			case 'PlayNote':
+				var note = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							notesPlaying: A2($turboMaCk$any_set$Set$Any$insert, note, model.notesPlaying)
+						}),
+					$author$project$Main$playNote(
+						$author$project$Main$noteToPitchOctaveNotation(note)));
+			case 'EndNote':
+				var note = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							notesPlaying: A2($turboMaCk$any_set$Set$Any$remove, note, model.notesPlaying)
+						}),
+					$author$project$Main$endNote(_Utils_Tuple0));
+			default:
+				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 		}
 	});
 var $mdgriffith$elm_ui$Internal$Model$AlignX = function (a) {
@@ -7232,24 +7747,6 @@ var $mdgriffith$elm_ui$Internal$Model$Style = F2(
 var $mdgriffith$elm_ui$Internal$Style$dot = function (c) {
 	return '.' + c;
 };
-var $elm$core$List$maybeCons = F3(
-	function (f, mx, xs) {
-		var _v0 = f(mx);
-		if (_v0.$ === 'Just') {
-			var x = _v0.a;
-			return A2($elm$core$List$cons, x, xs);
-		} else {
-			return xs;
-		}
-	});
-var $elm$core$List$filterMap = F2(
-	function (f, xs) {
-		return A3(
-			$elm$core$List$foldr,
-			$elm$core$List$maybeCons(f),
-			_List_Nil,
-			xs);
-	});
 var $elm$core$String$fromFloat = _String_fromNumber;
 var $mdgriffith$elm_ui$Internal$Model$formatColor = function (_v0) {
 	var red = _v0.a;
@@ -12673,52 +13170,6 @@ var $elm_community$typed_svg$TypedSvg$Attributes$viewBox = F4(
 	});
 var $elm_explorations$linear_algebra$Math$Vector2$add = _MJS_v2add;
 var $elm_community$typed_svg$TypedSvg$g = $elm_community$typed_svg$TypedSvg$Core$node('g');
-var $author$project$Main$ANote = {$: 'ANote'};
-var $author$project$Main$BNote = {$: 'BNote'};
-var $author$project$Main$CNote = {$: 'CNote'};
-var $author$project$Main$DNote = {$: 'DNote'};
-var $author$project$Main$ENote = {$: 'ENote'};
-var $author$project$Main$FNote = {$: 'FNote'};
-var $author$project$Main$GNote = {$: 'GNote'};
-var $author$project$Main$NaturalNote = F2(
-	function (a, b) {
-		return {$: 'NaturalNote', a: a, b: b};
-	});
-var $author$project$Main$SharpNote = F2(
-	function (a, b) {
-		return {$: 'SharpNote', a: a, b: b};
-	});
-var $author$project$Main$getNoteAtIndex = F2(
-	function (noteIndex, octave) {
-		switch (noteIndex) {
-			case 1:
-				return A2($author$project$Main$NaturalNote, $author$project$Main$CNote, octave);
-			case 2:
-				return A2($author$project$Main$SharpNote, $author$project$Main$CNote, octave);
-			case 3:
-				return A2($author$project$Main$NaturalNote, $author$project$Main$DNote, octave);
-			case 4:
-				return A2($author$project$Main$SharpNote, $author$project$Main$DNote, octave);
-			case 5:
-				return A2($author$project$Main$NaturalNote, $author$project$Main$ENote, octave);
-			case 6:
-				return A2($author$project$Main$NaturalNote, $author$project$Main$FNote, octave);
-			case 7:
-				return A2($author$project$Main$SharpNote, $author$project$Main$FNote, octave);
-			case 8:
-				return A2($author$project$Main$NaturalNote, $author$project$Main$GNote, octave);
-			case 9:
-				return A2($author$project$Main$SharpNote, $author$project$Main$GNote, octave);
-			case 10:
-				return A2($author$project$Main$NaturalNote, $author$project$Main$ANote, octave);
-			case 11:
-				return A2($author$project$Main$SharpNote, $author$project$Main$ANote, octave);
-			case 12:
-				return A2($author$project$Main$NaturalNote, $author$project$Main$BNote, octave);
-			default:
-				return A2($author$project$Main$NaturalNote, $author$project$Main$CNote, octave);
-		}
-	});
 var $turboMaCk$any_dict$Dict$Any$member = F2(
 	function (k, _v0) {
 		var dict = _v0.a.dict;
@@ -12734,14 +13185,8 @@ var $turboMaCk$any_set$Set$Any$member = F2(
 		return A2($turboMaCk$any_dict$Dict$Any$member, a, dict);
 	});
 var $elm$core$List$sortBy = _List_sortBy;
-var $author$project$Main$EndNote = function (a) {
-	return {$: 'EndNote', a: a};
-};
 var $elm_community$typed_svg$TypedSvg$Types$Paint = function (a) {
 	return {$: 'Paint', a: a};
-};
-var $author$project$Main$PlayNote = function (a) {
-	return {$: 'PlayNote', a: a};
 };
 var $avh4$elm_color$Color$RgbaSpace = F4(
 	function (a, b, c, d) {
@@ -12908,7 +13353,7 @@ var $author$project$Main$viewOctave = F3(
 		var noteViews = A2(
 			$elm$core$List$map,
 			function (noteIndex) {
-				var note = A2($author$project$Main$getNoteAtIndex, noteIndex, octave);
+				var note = A2($author$project$Main$getNoteAtIndex, octave, noteIndex);
 				var isPlaying = A2($turboMaCk$any_set$Set$Any$member, note, model.notesPlaying);
 				var deltaX = function () {
 					if (note.$ === 'NaturalNote') {
@@ -12921,7 +13366,7 @@ var $author$project$Main$viewOctave = F3(
 					F2(
 						function (currNoteIndex, distance) {
 							return distance + function () {
-								var _v3 = A2($author$project$Main$getNoteAtIndex, currNoteIndex, octave);
+								var _v3 = A2($author$project$Main$getNoteAtIndex, octave, currNoteIndex);
 								if (_v3.$ === 'NaturalNote') {
 									return model.naturalKeyWidth;
 								} else {
