@@ -1,0 +1,10 @@
+[package]
+name = "music-synthesizer-webview"
+version = "0.1.0"
+authors = ["Kevin Li <kevinli020508@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+web-view = { version = "0.5.4" }

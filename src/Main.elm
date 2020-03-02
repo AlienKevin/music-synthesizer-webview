@@ -5,6 +5,7 @@ import Browser.Events
 import Color
 import Html exposing (Html)
 import Html.Attributes
+import Html.Events
 import Set.Any as Set exposing (AnySet)
 import Math.Vector2 as Vector2 exposing (Vec2)
 import Element as E
@@ -308,45 +309,44 @@ viewNote model position isPlaying note =
     attributes =
       ( case note of
         NaturalNote _ _ ->
-          [ E.width <| E.px model.naturalKeyWidth
-          , E.height <| E.px model.naturalKeyHeight
+          [ Html.Attributes.style "width" <| String.fromInt model.naturalKeyWidth ++ "px"
+          , Html.Attributes.style "height" <| String.fromInt model.naturalKeyHeight ++ "px"
           ]
         SharpNote _ _ ->
-          [ E.width <| E.px model.accidentalKeyWidth
-          , E.height <| E.px model.accidentalKeyHeight
+          [ Html.Attributes.style "width" <| String.fromInt model.accidentalKeyWidth ++ "px"
+          , Html.Attributes.style "height" <| String.fromInt model.accidentalKeyHeight ++ "px"
           ]
       )
   in
-  Input.button
+  E.html <|
+    Html.button
     ( attributes
-    ++ [ Background.color <| toElmUIColor fillColor
-    , Events.onMouseDown <| PlayNote note
-    , Events.onMouseUp <| EndNote note
-    , Border.width <| 2
-    , Border.color <| toElmUIColor Color.darkGrey
-    , E.htmlAttribute <| Html.Attributes.style "position" "absolute"
-    , E.htmlAttribute <| Html.Attributes.style "left" <| String.fromFloat <| Vector2.getX position
-    , E.htmlAttribute <| Html.Attributes.style "top" <| String.fromFloat <| Vector2.getY position
+    ++ [ Html.Attributes.style "background" <| Color.toCssString fillColor
+    , Html.Events.onMouseDown <| PlayNote note
+    , Html.Events.onMouseLeave <| EndNote note
+    , Html.Attributes.style "border-width" "2px"
+    , Html.Attributes.style "border-color" <| Color.toCssString Color.darkGrey
+    , Html.Attributes.style "position" "absolute"
+    , Html.Attributes.style "left" <| String.fromFloat <| Vector2.getX position
+    , Html.Attributes.style "top" <| String.fromFloat <| Vector2.getY position
     ]
     )
-    { onPress = Nothing
-    , label = E.text ""
-    }
+    []
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
   case msg of
     PlayNote note ->
-      ( { model |
-        notesPlaying =
-          Set.insert note model.notesPlaying
-      }
-      , if Set.member note model.notesPlaying then
-          Cmd.none
-        else
-          playNote <| noteToPitchOctaveNotation note
-      )
+        ( { model |
+          notesPlaying =
+            Set.insert note model.notesPlaying
+        }
+        , if Set.member note model.notesPlaying then
+            Cmd.none
+          else
+            playNote <| noteToPitchOctaveNotation note
+        )
     EndNote note ->
       ( { model |
         notesPlaying =
